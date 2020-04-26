@@ -1,6 +1,8 @@
 #pragma once
 
-namespace is::signals
+namespace is
+{
+namespace signals
 {
 namespace detail
 {
@@ -21,4 +23,4 @@ struct signal_arg<U&>
 template <typename T>
 using signal_arg_t = typename detail::signal_arg<T>::type;
 
-} // namespace is::signals
+} } // namespace

@@ -1,11 +1,11 @@
 #include "../include/connection.h"
 
-namespace is::signals
+namespace is { namespace signals
 {
 namespace
 {
 
-auto get_advanced_connection_impl(const advanced_connection& connection) noexcept
+advanced_connection::impl_ptr get_advanced_connection_impl(const advanced_connection& connection) noexcept
 {
 	struct advanced_connection_impl_getter : private advanced_connection
 	{
@@ -248,4 +248,4 @@ advanced_connection advanced_scoped_connection::release() noexcept
 	return conn;
 }
 
-} // namespace is::signals
+} } // namespace is::signals

@@ -1,7 +1,7 @@
 #pragma once
 #include <atomic>
 
-namespace is::signals::detail
+namespace is { namespace signals { namespace detail
 {
 
 class spin_mutex
@@ -35,4 +35,4 @@ private:
 	std::atomic_flag m_busy = ATOMIC_FLAG_INIT;
 };
 
-} // namespace is::signals::detail
+} } } // namespace is::signals::detail

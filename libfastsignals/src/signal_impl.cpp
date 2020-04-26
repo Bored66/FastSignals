@@ -1,13 +1,13 @@
-#include "../include/signal_impl.h"
+#include "signal_impl.h"
 #include <algorithm>
 #include <mutex>
 
-namespace is::signals::detail
+namespace is { namespace signals { namespace detail
 {
 
 uint64_t signal_impl::add(packed_function fn)
 {
-	std::lock_guard lock(m_mutex);
+    std::lock_guard<spin_mutex> lock(m_mutex);
 
 	m_functions.emplace_back(std::move(fn));
 
@@ -27,7 +27,7 @@ uint64_t signal_impl::add(packed_function fn)
 
 void signal_impl::remove(uint64_t id) noexcept
 {
-	std::lock_guard lock(m_mutex);
+    std::lock_guard<spin_mutex> lock(m_mutex);
 
 	// We use binary search because ids array is always sorted.
 	auto it = std::lower_bound(m_ids.begin(), m_ids.end(), id);
@@ -41,8 +41,8 @@ void signal_impl::remove(uint64_t id) noexcept
 
 void signal_impl::remove_all() noexcept
 {
-	std::lock_guard lock(m_mutex);
-	m_functions.clear();
+    std::lock_guard<spin_mutex> lock(m_mutex);
+    m_functions.clear();
 	m_ids.clear();
 }
 
@@ -52,7 +52,7 @@ bool signal_impl::get_next_slot(packed_function& slot, size_t& expectedIndex, ui
 	//  - on each step find first slot with ID >= slotId
 	//  - after each call increment slotId
 
-	std::lock_guard lock(m_mutex);
+    std::lock_guard<spin_mutex> lock(m_mutex);
 
 	// Avoid binary search if next slot wasn't moved between mutex locks.
 	if (expectedIndex >= m_ids.size() || m_ids[expectedIndex] != nextId)
@@ -76,9 +76,9 @@ bool signal_impl::get_next_slot(packed_function& slot, size_t& expectedIndex, ui
 
 size_t signal_impl::count() const noexcept
 {
-	std::lock_guard lock(m_mutex);
+    std::lock_guard<spin_mutex> lock(m_mutex);
 
 	return m_functions.size();
 }
 
-} // namespace is::signals::detail
+} } } // namespace is::signals::detail

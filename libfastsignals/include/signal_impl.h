@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-namespace is::signals::detail
+namespace is { namespace signals { namespace detail
 {
 
 class signal_impl
@@ -25,23 +25,24 @@ public:
 		packed_function slot;
 		size_t slotIndex = 0;
 		uint64_t slotId = 1;
-
-		if constexpr (std::is_same_v<Result, void>)
-		{
+        //Result result;
+        //if constexpr (std::is_same_v<Result, void>)
+        //{
 			while (get_next_slot(slot, slotIndex, slotId))
 			{
-				slot.get<Signature>()(std::forward<Args>(args)...);
+                slot.get<Signature>()(std::forward<Args>(args)...);
 			}
-		}
-		else
-		{
-			Combiner combiner;
-			while (get_next_slot(slot, slotIndex, slotId))
-			{
-				combiner(slot.get<Signature>()(std::forward<Args>(args)...));
-			}
-			return combiner.get_value();
-		}
+        //}
+//		else
+//		{
+//			Combiner combiner;
+//			while (get_next_slot(slot, slotIndex, slotId))
+//			{
+//				combiner(slot.get<Signature>()(std::forward<Args>(args)...));
+//			}
+//			return combiner.get_value();
+//		}
+            //return result;
 	}
 
 private:
@@ -56,4 +57,4 @@ private:
 using signal_impl_ptr = std::shared_ptr<signal_impl>;
 using signal_impl_weak_ptr = std::weak_ptr<signal_impl>;
 
-} // namespace is::signals::detail
+} } } // namespace is::signals::detail

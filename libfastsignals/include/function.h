@@ -2,7 +2,7 @@
 
 #include "function_detail.h"
 
-namespace is::signals
+namespace is { namespace signals
 {
 // Derive your class from not_directly_callable to prevent function from wrapping it using its template constructor
 // Useful if your class provides custom operator for casting to function
@@ -11,8 +11,11 @@ struct not_directly_callable
 };
 
 template <class Fn, class Function, class Return, class... Arguments>
-using enable_if_callable_t = typename std::enable_if_t<
-	!std::is_same_v<std::decay_t<Fn>, Function> && !std::is_base_of_v<not_directly_callable, std::decay_t<Fn>> && std::is_same_v<std::invoke_result_t<Fn, Arguments...>, Return>>;
+using enable_if_callable_t = typename std::enable_if
+    <
+    !std::is_same<typename std::decay<Fn>::type, Function>::value &&
+    !std::is_base_of<not_directly_callable, typename std::decay<Fn>::type>::value &&
+    std::is_same<typename std::invoke_result<Fn, Arguments...>::type, Return>::value>::type;
 
 template <class Signature>
 class function;
@@ -31,7 +34,7 @@ public:
 	function& operator=(function&& other) noexcept = default;
 
 	template <class Fn, typename = enable_if_callable_t<Fn, function<Return(Arguments...)>, Return, Arguments...>>
-	function(Fn&& function) noexcept(detail::is_noexcept_packed_function_init<Fn, Return, Arguments...>)
+    function(Fn&& function) noexcept(detail::is_noexcept_packed_function_init<Fn, Return, Arguments...>())
 	{
 		m_packed.init<Fn, Return, Arguments...>(std::forward<Fn>(function));
 	}
@@ -51,4 +54,4 @@ private:
 	detail::packed_function m_packed;
 };
 
-} // namespace is::signals
+} } // namespace is::signals

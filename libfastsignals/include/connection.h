@@ -2,7 +2,7 @@
 
 #include "signal_impl.h"
 
-namespace is::signals
+namespace is { namespace signals
 {
 
 // Connection keeps link between signal and slot and can disconnect them.
@@ -41,7 +41,7 @@ public:
 	private:
 		std::atomic<int> m_blockCounter = ATOMIC_VAR_INIT(0);
 	};
-	using impl_ptr = std::shared_ptr<advanced_connection_impl>;
+    using impl_ptr = std::shared_ptr<advanced_connection_impl>;
 
 	advanced_connection() noexcept;
 	explicit advanced_connection(connection&& conn, impl_ptr&& impl) noexcept;
@@ -111,4 +111,4 @@ public:
 	advanced_connection release() noexcept;
 };
 
-} // namespace is::signals
+} } // namespace is::signals
