@@ -1,13 +1,13 @@
-# FastSignals
+# FastSignals 
+ATTENTION: it's been forked from https://github.com/ispringteam/FastSignals in order to make it work with C++11
 
 Yet another C++ signals and slots library
 
 * Works as drop-in replacement for Boost.Signals2 with the same API
     * Has better performance and more compact binary code
 * Thread-safe in most operations, including concurrent connects/disconnects/emits
-* Implemented with compact, pure C++17 code
+* Implemented with compact, pure ~~C++17~~ C++11 code
 
-[![Build Status](https://travis-ci.org/ispringteam/FastSignals.svg?branch=master)](https://travis-ci.org/ispringteam/FastSignals)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 ## Documentation
